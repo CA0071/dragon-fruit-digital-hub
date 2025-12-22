@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -25,41 +25,54 @@ const ContactSection = () => {
     {
       icon: MapPin,
       title: "Location",
-      details: ["Limpopo Province", "South Africa"],
+      details: ["Limpopo Province", "Polokwane, South Africa"],
+      link: null,
     },
     {
       icon: Phone,
-      title: "Phone",
-      details: ["+27 12 345 6789", "+27 98 765 4321"],
+      title: "Phone / WhatsApp",
+      details: ["+27 82 856 9925"],
+      link: "tel:+27828569925",
     },
     {
       icon: Mail,
       title: "Email",
-      details: ["info@dragonfruitsouthafrica.co.za", "sales@healthyfields.co.za"],
+      details: ["admin@proagrisa.com.za", "OrganicDFSA@gmail.com"],
+      link: "mailto:admin@proagrisa.com.za",
     },
     {
       icon: Clock,
       title: "Hours",
       details: ["Mon - Fri: 8am - 5pm", "Sat: 9am - 1pm"],
+      link: null,
     },
   ];
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-muted/50">
+    <section id="contact" className="py-20 md:py-32 bg-muted/50" aria-labelledby="contact-heading" itemScope itemType="https://schema.org/LocalBusiness">
+      <meta itemProp="name" content="Dragon Fruit South Africa - Healthy Fields" />
+      <meta itemProp="telephone" content="+27828569925" />
+      <meta itemProp="email" content="admin@proagrisa.com.za" />
+      <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+        <meta itemProp="addressLocality" content="Polokwane" />
+        <meta itemProp="addressRegion" content="Limpopo" />
+        <meta itemProp="addressCountry" content="South Africa" />
+      </div>
+
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 animate-fade-up">
+        <header className="text-center max-w-2xl mx-auto mb-16 animate-fade-up">
           <span className="text-primary font-body font-semibold text-sm uppercase tracking-wider">
             Get in Touch
           </span>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6">
+          <h2 id="contact-heading" className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6">
             Contact Us
           </h2>
           <p className="text-muted-foreground text-lg font-body">
-            Have questions about our products or interested in wholesale orders? 
-            We'd love to hear from you.
+            Interested in starting your dragon fruit farm or need quality plant material? 
+            Contact Max van Heerden, South Africa's first dragon fruit importer since 2008.
           </p>
-        </div>
+        </header>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Contact Info */}
@@ -68,7 +81,7 @@ const ContactSection = () => {
               {contactInfo.map((info) => (
                 <div
                   key={info.title}
-                  className="p-6 rounded-xl bg-card border border-border"
+                  className="p-6 rounded-xl bg-card border border-border hover:shadow-lg transition-shadow duration-300"
                 >
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     <info.icon className="w-6 h-6 text-primary" />
@@ -77,22 +90,46 @@ const ContactSection = () => {
                     {info.title}
                   </h3>
                   {info.details.map((detail, i) => (
-                    <p key={i} className="text-muted-foreground font-body text-sm">
-                      {detail}
-                    </p>
+                    info.link ? (
+                      <a key={i} href={info.link} className="block text-muted-foreground font-body text-sm hover:text-primary transition-colors">
+                        {detail}
+                      </a>
+                    ) : (
+                      <p key={i} className="text-muted-foreground font-body text-sm">
+                        {detail}
+                      </p>
+                    )
                   ))}
                 </div>
               ))}
             </div>
 
-            {/* Map placeholder */}
-            <div className="aspect-video rounded-xl bg-secondary/10 flex items-center justify-center border border-border">
-              <div className="text-center">
-                <MapPin className="w-12 h-12 text-secondary mx-auto mb-4" />
-                <p className="text-muted-foreground font-body">
-                  Visit us in Limpopo, South Africa
-                </p>
+            {/* WhatsApp CTA */}
+            <a
+              href="https://wa.me/27828569925?text=Hi%2C%20I'm%20interested%20in%20Dragon%20Fruit%20plants"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 p-6 rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors duration-300"
+            >
+              <MessageCircle className="w-8 h-8" />
+              <div>
+                <h3 className="font-display font-semibold text-lg">WhatsApp Us Directly</h3>
+                <p className="text-secondary-foreground/80 font-body text-sm">Quick response guaranteed</p>
               </div>
+            </a>
+
+            {/* Map placeholder */}
+            <div className="aspect-video rounded-xl bg-secondary/10 flex items-center justify-center border border-border overflow-hidden">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3670.0!2d29.4585!3d-23.9045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ec6d7c0a0a0a0a0%3A0x0!2sPolokwane%2C%20Limpopo!5e0!3m2!1sen!2sza!4v1234567890"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Dragon Fruit South Africa Location - Limpopo"
+              />
             </div>
           </div>
 
@@ -101,7 +138,7 @@ const ContactSection = () => {
             <h3 className="font-display text-2xl font-semibold text-foreground mb-6">
               Send us a Message
             </h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" name="contact" method="POST">
               <div>
                 <label htmlFor="name" className="block text-sm font-body font-medium text-foreground mb-2">
                   Full Name
@@ -109,11 +146,13 @@ const ContactSection = () => {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground font-body focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                   placeholder="Your name"
                   required
+                  autoComplete="name"
                 />
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -124,11 +163,13 @@ const ContactSection = () => {
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground font-body focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                     placeholder="your@email.com"
                     required
+                    autoComplete="email"
                   />
                 </div>
                 <div>
@@ -138,10 +179,12 @@ const ContactSection = () => {
                   <input
                     type="tel"
                     id="phone"
+                    name="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground font-body focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                     placeholder="+27 XX XXX XXXX"
+                    autoComplete="tel"
                   />
                 </div>
               </div>
@@ -151,11 +194,12 @@ const ContactSection = () => {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground font-body focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
-                  placeholder="How can we help you?"
+                  placeholder="Tell us about your project or inquiry..."
                   required
                 />
               </div>
